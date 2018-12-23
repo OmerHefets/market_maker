@@ -1,10 +1,17 @@
 import java.util.*;
 
 public class Offers {
-    ArrayList<Bids> bids = new ArrayList<Bids>();
-    ArrayList<Asks> asks = new ArrayList<Asks>();
+    ArrayList<Bids> bids = new ArrayList<>();
+    ArrayList<Asks> asks = new ArrayList<>();
 
-    void newBid(double price, int amount) {
+    void newBid() {
+        int amount;
+        double price;
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter amount of commodity: ");
+        amount = scanner.nextInt();
+        System.out.print("Enter your bidding price: ");
+        price = scanner.nextDouble();
         Bids bid = new Bids(price, amount);
         bids.add(bid);
     }
@@ -20,9 +27,27 @@ public class Offers {
         }
     }
 
-    void newAsk(double price, int amount) {
+    void newAsk() {
+        int amount;
+        double price;
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter amount of commodity: ");
+        amount = scanner.nextInt();
+        System.out.print("Enter your asking price: ");
+        price = scanner.nextDouble();
         Asks ask = new Asks(price, amount);
         asks.add(ask);
+    }
+
+    void printAsks() {
+        System.out.println("All asks:");
+        for (int i = 0; i < asks.size(); i++) {
+            Asks this_ask = asks.get(i);
+            double price = this_ask.price();
+            int amount = this_ask.amount();
+            System.out.printf("(%d) Price: %.2f, Amount %d", (i+1), price, amount);
+            System.out.println();
+        }
     }
 
 

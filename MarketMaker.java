@@ -1,8 +1,13 @@
 import java.util.Scanner;
 
-
 class UI {
-    void UserInterface() {
+    private void timeDelay(long t) {
+        try {
+            Thread.sleep(t);
+        } catch (InterruptedException e) {}
+    }
+
+    void UserInterface(Offers offers) {
         int choice;
         Scanner scan = new Scanner(System.in);
         System.out.println("Welcome, choose between info and action options:");
@@ -11,10 +16,10 @@ class UI {
             choice = scan.nextInt();
             switch(choice) {
                 case 1:
-                    choose_info();
+                    choose_info(offers);
                     break;
                 case 2:
-                    choose_action();
+                    choose_action(offers);
                     break;
                 default:
                     System.out.println("No such option, try again.");
@@ -23,7 +28,7 @@ class UI {
 
     }
 
-    private void choose_info() {
+    private void choose_info(Offers offers) {
         int choice;
         info_options();
         do {
@@ -31,23 +36,39 @@ class UI {
             choice = scan.nextInt();
             switch(choice) {
                 case 1:
+                    timeDelay(2500);
+                    choose_info(offers);
                     break;
                 case 2:
+                    timeDelay(2500);
+                    choose_info(offers);
                     break;
                 case 3:
+                    offers.printBids();
+                    timeDelay(2500);
+                    choose_info(offers);
                     break;
                 case 4:
+                    offers.printAsks();
+                    timeDelay(2500);
+                    choose_info(offers);
                     break;
                 case 5:
+                    timeDelay(2500);
+                    choose_info(offers);
                     break;
                 case 6:
+                    timeDelay(2500);
+                    choose_info(offers);
                     break;
                 case 7:
-                    choose_action();
+                    choose_action(offers);
                     break;
                 case 8:
                     info_options();
                     break;
+                case 9:
+                    return;
                 default:
                     System.out.println("No such option, try again.");
                     break;
@@ -55,7 +76,7 @@ class UI {
         } while (choice < 1 || choice > 7);
     }
 
-    private void choose_action() {
+    private void choose_action(Offers offers) {
         int choice;
         action_options();
         do {
@@ -63,19 +84,31 @@ class UI {
             choice = scan.nextInt();
             switch(choice) {
                 case 1:
+                    offers.newBid();
+                    timeDelay(1000);
+                    choose_action(offers);
                     break;
                 case 2:
+                    offers.newAsk();
+                    timeDelay(1000);
+                    choose_action(offers);
                     break;
                 case 3:
+                    timeDelay(2500);
+                    choose_action(offers);
                     break;
                 case 4:
+                    timeDelay(2500);
+                    choose_action(offers);
                     break;
                 case 5:
-                    choose_info();
+                    choose_info(offers);
                     break;
                 case 6:
                     action_options();
                     break;
+                case 7:
+                    return;
                 default:
                     System.out.println("No such option, try again.");
             }
@@ -95,6 +128,7 @@ class UI {
         System.out.println("4. Place a Stop Order");
         System.out.println("5. Switch to Info");
         System.out.println("6. View your options");
+        System.out.println("7. exit");
     }
 
     private void info_options() {
@@ -107,6 +141,7 @@ class UI {
         System.out.println("6. Data of a specific offer");
         System.out.println("7. Switch to actions");
         System.out.println("8. View your options");
+        System.out.println("9. exit");
     }
 
 }
@@ -114,13 +149,11 @@ class UI {
 public class MarketMaker {
     public static void main(String args[]){
         UI beginUI = new UI();
-        beginUI.UserInterface();
         Offers offers = new Offers();
-        offers.newBid(99.5, 10);
-        offers.newBid(99, 20);
-        offers.newBid(99.5, 5);
-        System.out.println(offers.bids);
-        System.out.println(offers.bids.get(1));
-        offers.printBids();
+        beginUI.UserInterface(offers);
+        //System.out.println(offers.bids);
+        //System.out.println(offers.bids.get(1));
+        //offers.printBids();
+        //offers.printAsks();
     }
 }
