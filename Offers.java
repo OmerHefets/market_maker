@@ -1,8 +1,27 @@
+import java.lang.reflect.Array;
 import java.util.*;
 
 public class Offers {
     ArrayList<Bids> bids = new ArrayList<>();
     ArrayList<Asks> asks = new ArrayList<>();
+
+    // insert elements to bid,ask lists - log(n) complexity
+    int binInsert(List<Bids> arr, double element) {
+        int arr_size = arr.size();
+        if (arr_size == 0) {
+            return 0;
+        }
+        arr_size /= 2;
+        double temp = arr.get(arr_size).price();
+        if (temp > element) {
+            return binInsert(arr.subList(0, arr_size), element);
+        } else if (temp < element) {
+            return 1;
+        } else {
+            return arr_size;
+        }
+    }
+
 
     void newBid() {
         int amount;
@@ -49,8 +68,6 @@ public class Offers {
             System.out.println();
         }
     }
-
-
 }
 
 class Bids {
