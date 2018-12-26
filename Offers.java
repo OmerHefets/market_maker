@@ -5,23 +5,34 @@ public class Offers {
     ArrayList<Bids> bids = new ArrayList<>();
     ArrayList<Asks> asks = new ArrayList<>();
 
-    // insert elements to bid,ask lists - log(n) complexity
-    int binInsert(List<Bids> arr, double element) {
+    // insert elements to bid,ask lists - O(n) complexity (no binSearch)
+    int IndexInsertBid(ArrayList<Bids> arr, double element) {
         int arr_size = arr.size();
         if (arr_size == 0) {
             return 0;
         }
-        arr_size /= 2;
-        double temp = arr.get(arr_size).price();
-        if (temp > element) {
-            return binInsert(arr.subList(0, arr_size), element);
-        } else if (temp < element) {
-            return 1;
-        } else {
-            return arr_size;
+        for (int i = 0; i < arr_size; i++){
+            double cur_price = arr.get(i).price();
+            if (element > cur_price) {
+                return i;
+            }
         }
+        return arr_size - 1;
     }
 
+    int IndexInsertAsk(ArrayList<Asks> arr, double element) {
+        int arr_size = arr.size();
+        if (arr_size == 0) {
+            return 0;
+        }
+        for (int i = 0; i < arr_size; i++){
+            double cur_price = arr.get(i).price();
+            if (element < cur_price) {
+                return i;
+            }
+        }
+        return arr_size - 1;
+    }
 
     void newBid() {
         int amount;
@@ -32,7 +43,8 @@ public class Offers {
         System.out.print("Enter your bidding price: ");
         price = scanner.nextDouble();
         Bids bid = new Bids(price, amount);
-        bids.add(bid);
+        int i = IndexInsertBid(bids, bid.price());
+        bids.add(i, bid);
     }
 
     void printBids() {
@@ -55,7 +67,8 @@ public class Offers {
         System.out.print("Enter your asking price: ");
         price = scanner.nextDouble();
         Asks ask = new Asks(price, amount);
-        asks.add(ask);
+        int i = IndexInsertAsk(asks, ask.price());
+        asks.add(i, ask);
     }
 
     void printAsks() {
