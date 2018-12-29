@@ -94,6 +94,7 @@ class UI {
                     choose_action(offers);
                     break;
                 case 3:
+                    offers.MarketOrder();
                     timeDelay(2500);
                     choose_action(offers);
                     break;
