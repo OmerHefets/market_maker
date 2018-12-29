@@ -17,7 +17,7 @@ public class Offers {
                 return i;
             }
         }
-        return arr_size - 1;
+        return arr_size;
     }
 
     int IndexInsertAsk(ArrayList<Asks> arr, double element) {
@@ -31,7 +31,59 @@ public class Offers {
                 return i;
             }
         }
-        return arr_size - 1;
+        return arr_size;
+    }
+
+    void MarketOrder() {
+        int action_amount, action_amount_const;
+        int sell_or_buy;
+        Scanner scanner = new Scanner(System.in);
+        do {
+            System.out.print("Enter amount of commodity: ");
+            action_amount = scanner.nextInt();
+            action_amount_const = action_amount;
+            System.out.print("Enter 1 for selling / 2 for buying: ");
+            sell_or_buy = scanner.nextInt();
+        } while (sell_or_buy != 1 && sell_or_buy != 2);
+        if (sell_or_buy == 1) {
+            if (asks.size() == 0) {
+                System.out.println("There are no asks in the market");
+            } else {
+                for (int i=0; (action_amount > 0) && (bids.size() > 0); i++) {
+                    double temp_amount = asks.get(i).amount();
+                    if (temp_amount > action_amount) {
+                        action_amount = 0;
+                        asks.get(i).change("amount", (temp_amount-action_amount));
+                    } else {
+                        asks.remove(i);
+                        action_amount -= temp_amount;
+                    }
+                }
+                if (action_amount > 0) {
+                    System.out.printf("Not all units were sold, only %d of %d\n",
+                            (action_amount_const - action_amount), action_amount_const);
+                }
+            }
+        } else {
+            if (bids.size() == 0) {
+                System.out.println("There are no bids in the market");
+            } else {
+                for (; (action_amount > 0) && (bids.size() > 0);) {
+                    int temp_amount = bids.get(0).amount();
+                    if (temp_amount > action_amount) {
+                        bids.get(0).change("amount", (temp_amount-action_amount));
+                        action_amount = 0;
+                    } else {
+                        bids.remove(0);
+                        action_amount -= temp_amount;
+                    }
+                }
+                if (action_amount > 0) {
+                    System.out.printf("Not all units were bought, only %d of %d\n",
+                            (action_amount_const - action_amount), action_amount_const);
+                }
+            }
+        }
     }
 
     void newBid() {
@@ -92,6 +144,14 @@ class Bids {
         this.amount = amount;
     }
 
+    void change(String var, double new_val) {
+        if (var.equals("price")) {
+            this.price = new_val;
+        } else if (var.equals("amount")) {
+            this.amount = (int) new_val;
+        }
+    }
+
     double price() {
         return price;
     }
@@ -108,6 +168,14 @@ class Asks {
     Asks(double price, int amount) {
         this.price = price;
         this.amount = amount;
+    }
+
+    void change(String var, double new_val) {
+        if (var.equals("price")) {
+            this.price = new_val;
+        } else if (var.equals("amount")) {
+            this.amount = (int) new_val;
+        }
     }
 
     double price() {
