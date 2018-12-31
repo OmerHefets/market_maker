@@ -40,6 +40,7 @@ class UI {
                     choose_info(offers);
                     break;
                 case 2:
+                    offers.currentBidAsk();
                     timeDelay(2500);
                     choose_info(offers);
                     break;

@@ -4,6 +4,7 @@ import java.util.*;
 public class Offers {
     ArrayList<Bids> bids = new ArrayList<>();
     ArrayList<Asks> asks = new ArrayList<>();
+    private double quote;
 
     // insert elements to bid,ask lists - O(n) complexity (no binSearch)
     int IndexInsertBid(ArrayList<Bids> arr, double element) {
@@ -131,6 +132,31 @@ public class Offers {
             int amount = this_ask.amount();
             System.out.printf("(%d) Price: %.2f, Amount %d", (i+1), price, amount);
             System.out.println();
+        }
+    }
+
+    void currentBidAsk() {
+        if(bids.size() == 0) {
+            System.out.println("No current bids.");
+        } else {
+            double curBidPrice = bids.get(0).price();
+            int curBidAmount = bids.get(0).amount();
+            if (bids.get(0).amount() == 1) {
+                System.out.printf("Bidding 1 unit for %f\n", curBidPrice);
+            } else {
+                System.out.printf("Bidding %d units for %f\n", curBidAmount, curBidPrice);
+            }
+        }
+        if(asks.size() == 0) {
+            System.out.println("No current asks.");
+        } else {
+            double curAskPrice = asks.get(0).price();
+            int curAskAmount = asks.get(0).amount();
+            if (asks.get(0).amount() == 1) {
+                System.out.printf("Asking 1 unit for %f\n", curAskPrice);
+            } else {
+                System.out.printf("Asking %d units for %f\n", curAskAmount, curAskPrice);
+            }
         }
     }
 }
