@@ -36,6 +36,7 @@ class UI {
             choice = scan.nextInt();
             switch(choice) {
                 case 1:
+                    offers.printQuote();
                     timeDelay(2500);
                     choose_info(offers);
                     break;
@@ -55,6 +56,7 @@ class UI {
                     choose_info(offers);
                     break;
                 case 5:
+                    offers.printVolume();
                     timeDelay(2500);
                     choose_info(offers);
                     break;
@@ -96,7 +98,7 @@ class UI {
                     break;
                 case 3:
                     offers.MarketOrder();
-                    timeDelay(2500);
+                    timeDelay(1000);
                     choose_action(offers);
                     break;
                 case 4:

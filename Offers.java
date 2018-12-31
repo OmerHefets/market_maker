@@ -4,8 +4,20 @@ import java.util.*;
 public class Offers {
     ArrayList<Bids> bids = new ArrayList<>();
     ArrayList<Asks> asks = new ArrayList<>();
-    private double quote;
+    private double quote = -1;
+    private int volume = 0;
 
+    void printQuote() {
+        if (quote == -1) {
+            System.out.println("There is no quote in the market.");
+        } else {
+            System.out.printf("Current quote is: %.2f\n", quote);
+        }
+    }
+
+    void printVolume() {
+        System.out.println(volume);
+    }
     // insert elements to bid,ask lists - O(n) complexity (no binSearch)
     int IndexInsertBid(ArrayList<Bids> arr, double element) {
         int arr_size = arr.size();
@@ -46,17 +58,20 @@ public class Offers {
             System.out.print("Enter 1 for selling / 2 for buying: ");
             sell_or_buy = scanner.nextInt();
         } while (sell_or_buy != 1 && sell_or_buy != 2);
-        if (sell_or_buy == 1) {
+        if (sell_or_buy == 2) {
             if (asks.size() == 0) {
                 System.out.println("There are no asks in the market");
             } else {
-                for (int i=0; (action_amount > 0) && (bids.size() > 0); i++) {
-                    double temp_amount = asks.get(i).amount();
+                for (; (action_amount > 0) && (bids.size() > 0);) {
+                    int temp_amount = asks.get(0).amount();
+                    quote = asks.get(0).price();
                     if (temp_amount > action_amount) {
+                        volume += action_amount;
+                        asks.get(0).change("amount", (temp_amount-action_amount));
                         action_amount = 0;
-                        asks.get(i).change("amount", (temp_amount-action_amount));
                     } else {
-                        asks.remove(i);
+                        volume += temp_amount;
+                        asks.remove(0);
                         action_amount -= temp_amount;
                     }
                 }
@@ -71,10 +86,13 @@ public class Offers {
             } else {
                 for (; (action_amount > 0) && (bids.size() > 0);) {
                     int temp_amount = bids.get(0).amount();
+                    quote = bids.get(0).price();
                     if (temp_amount > action_amount) {
+                        volume += action_amount;
                         bids.get(0).change("amount", (temp_amount-action_amount));
                         action_amount = 0;
                     } else {
+                        volume += temp_amount;
                         bids.remove(0);
                         action_amount -= temp_amount;
                     }
@@ -101,13 +119,17 @@ public class Offers {
     }
 
     void printBids() {
-        System.out.println("All bids:");
-        for (int i = 0; i < bids.size(); i++) {
-            Bids this_bid = bids.get(i);
-            double price = this_bid.price();
-            int amount = this_bid.amount();
-            System.out.printf("(%d) Price: %.2f, Amount %d", (i+1), price, amount);
-            System.out.println();
+        if (bids.size() > 0) {
+            System.out.println("All bids:");
+            for (int i = 0; i < bids.size(); i++) {
+                Bids this_bid = bids.get(i);
+                double price = this_bid.price();
+                int amount = this_bid.amount();
+                System.out.printf("(%d) Price: %.2f, Amount %d", (i + 1), price, amount);
+                System.out.println();
+            }
+        } else {
+            System.out.println("No current bids.");
         }
     }
 
@@ -125,13 +147,17 @@ public class Offers {
     }
 
     void printAsks() {
-        System.out.println("All asks:");
-        for (int i = 0; i < asks.size(); i++) {
-            Asks this_ask = asks.get(i);
-            double price = this_ask.price();
-            int amount = this_ask.amount();
-            System.out.printf("(%d) Price: %.2f, Amount %d", (i+1), price, amount);
-            System.out.println();
+        if (asks.size() > 0) {
+            System.out.println("All asks:");
+            for (int i = 0; i < asks.size(); i++) {
+                Asks this_ask = asks.get(i);
+                double price = this_ask.price();
+                int amount = this_ask.amount();
+                System.out.printf("(%d) Price: %.2f, Amount %d", (i + 1), price, amount);
+                System.out.println();
+            }
+        } else {
+            System.out.println("No current asks.");
         }
     }
 
@@ -142,9 +168,9 @@ public class Offers {
             double curBidPrice = bids.get(0).price();
             int curBidAmount = bids.get(0).amount();
             if (bids.get(0).amount() == 1) {
-                System.out.printf("Bidding 1 unit for %f\n", curBidPrice);
+                System.out.printf("Bidding 1 unit for %.2f\n", curBidPrice);
             } else {
-                System.out.printf("Bidding %d units for %f\n", curBidAmount, curBidPrice);
+                System.out.printf("Bidding %d units for %.2f\n", curBidAmount, curBidPrice);
             }
         }
         if(asks.size() == 0) {
@@ -153,9 +179,9 @@ public class Offers {
             double curAskPrice = asks.get(0).price();
             int curAskAmount = asks.get(0).amount();
             if (asks.get(0).amount() == 1) {
-                System.out.printf("Asking 1 unit for %f\n", curAskPrice);
+                System.out.printf("Asking 1 unit for %.2f\n", curAskPrice);
             } else {
-                System.out.printf("Asking %d units for %f\n", curAskAmount, curAskPrice);
+                System.out.printf("Asking %d units for %.2f\n", curAskAmount, curAskPrice);
             }
         }
     }
