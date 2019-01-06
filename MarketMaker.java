@@ -61,6 +61,7 @@ class UI {
                     choose_info(offers);
                     break;
                 case 6:
+                    offers.ShowOfferData();
                     timeDelay(2500);
                     choose_info(offers);
                     break;
