@@ -185,7 +185,31 @@ public class Offers {
             }
         }
     }
+
+    void ShowOfferData(){
+        int sell_or_buy;
+        int data_index = -1;
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter 1 for asks / 2 for bids: ");
+        sell_or_buy = scanner.nextInt();
+        if (sell_or_buy == 1) {
+            int asksSize = asks.size();
+            if (asksSize == 0) {
+                System.out.println("No current asks.");
+            }
+            do {
+                if (data_index >= asksSize){
+                    System.out.println("Out of bounds, no such index;");
+                }
+                System.out.print("Enter the ask index: ");
+                data_index = scanner.nextInt();
+            } while (data_index-1 >= asksSize);
+            System.out.printf("Ask index %d's amount: %d\n",data_index, asks.get(data_index-1).amount());
+            System.out.printf("Ask index %d's price: %.2f\n", data_index, asks.get(data_index-1).price());
+        }
+    }
 }
+
 
 class Bids {
     private double price;
